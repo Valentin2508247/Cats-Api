@@ -1,9 +1,11 @@
 package com.valentin.catsapi.state
 
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.valentin.catsapi.adapters.CatAdapter
 import com.valentin.catsapi.databinding.FragmentCatsBinding
 
 interface LoadingState {
-    fun showState(binding: FragmentCatsBinding)
+    fun showState(adapter: CatAdapter, layoutManager: LinearLayoutManager, pos: Int)
 
     companion object {
         val Static = StaticState()

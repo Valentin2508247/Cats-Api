@@ -18,11 +18,11 @@ class CatViewHolder(
         //binding.timerTextView.text = cat.toString()
 
         binding.ivLike.setOnClickListener {
-
+            listener.likeCat(cat)
         }
 
         binding.ivDownload.setOnClickListener {
-
+            listener.downloadImage(cat)
         }
     }
 }

@@ -9,40 +9,66 @@ import com.valentin.catsapi.models.Cat
 import com.valentin.catsapi.repositories.CatsRepository
 import com.valentin.catsapi.state.LoadingState
 import com.valentin.catsapi.state.StaticState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class CatsViewModel(private val repository: CatsRepository): ViewModel() {
+class CatsViewModel @Inject constructor(private val repository: CatsRepository): ViewModel() {
     private val TAG = "CatsViewModel"
 
-    val cats = MutableLiveData<List<Cat>>()
+
+    private val exceptionHandler = CoroutineExceptionHandler {
+        _, throwable -> handleError(throwable)
+    }
+
+    val cats = MutableLiveData<MutableList<Cat>>()
     val state = MutableLiveData<LoadingState>()
+    private val currentList: MutableList<Cat> = mutableListOf<Cat>()
+    var page = 0
+    var pos = 0
 
     init {
         state.value = LoadingState.Static
-        //loadCats()
+        loadCats()
     }
 
-    var page = 0
+
 
 
     fun loadCats() {
         state.value = LoadingState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-            cats.postValue(repository.loadCats(limit, page++, order, type))
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            val list = repository.loadCats(limit, page, order, type)
+            pos = page * limit
+            currentList.addAll(list)
+            cats.postValue(currentList)
+            page++
             Log.d(TAG, cats.value.toString())
+            state.postValue(LoadingState.Static)
         }
     }
 
+    fun saveCat(cat: Cat) {
+        repository.saveCat(cat)
+    }
+
+    private fun handleError(t: Throwable) {
+        Log.e(TAG, "exception!", t)
+        state.postValue(LoadingState.Error)
+    }
+
     private companion object {
-        const val limit = 20
+        const val limit = 8
         const val order = "DESC"
         const val type = "jpg,png"
     }
 }
 
-class CatsViewModelFactory(private val repository: CatsRepository): ViewModelProvider.Factory{
+class CatsViewModelFactory @Inject constructor(private val repository: CatsRepository): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CatsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

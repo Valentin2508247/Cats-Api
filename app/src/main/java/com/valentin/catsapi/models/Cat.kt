@@ -1,3 +1,10 @@
 package com.valentin.catsapi.models
 
-data class Cat(val id: String, val url: String)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "cat")
+data class Cat(
+    @PrimaryKey val id: String,
+    val url: String)
+

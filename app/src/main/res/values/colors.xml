@@ -11,4 +11,5 @@
     <color name="yellow_primary">#7cb342</color>
     <color name="yellow_light">#aee571</color>
     <color name="yellow_dark">#4b830d</color>
+    <color name="red_error">#b71c1c</color>
 </resources>
