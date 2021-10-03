@@ -8,39 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.valentin.catsapi.adapters.CatAdapter
 import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.adapters.CatListener
-import com.valentin.catsapi.api.ApiHelper
-import com.valentin.catsapi.api.RetrofitBuilder
 import com.valentin.catsapi.appComponent
-import com.valentin.catsapi.database.AppDatabase
 import com.valentin.catsapi.databinding.FragmentCatsBinding
 import com.valentin.catsapi.models.Cat
-import com.valentin.catsapi.repositories.CatsRepository
 import com.valentin.catsapi.viewmodels.CatsViewModel
 import com.valentin.catsapi.viewmodels.CatsViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class CatsFragment : Fragment(), CatListener {
-    private val TAG = "CatFragment"
 
     private var _binding: FragmentCatsBinding? = null
     private val binding get() = _binding!!
     private val mAdapter = CatAdapter(this)
     private lateinit var mListener: CatFragmentListener
     private lateinit var mLayoutManager: LinearLayoutManager
-//    private var loading = true
+
+    //    private var loading = true
     var pastVisibleItems = 0
-//    var visibleItemCount:Int = 0
+
+    //    var visibleItemCount:Int = 0
 //    var totalItemCount:Int = 0
     @Inject
     lateinit var viewModelFactory: CatsViewModelFactory
@@ -86,7 +79,7 @@ class CatsFragment : Fragment(), CatListener {
 //        ))).get(CatsViewModel::class.java)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CatsViewModel::class.java)
         viewModel.apply {
-            cats.observe(viewLifecycleOwner){
+            cats.observe(viewLifecycleOwner) {
                 Toast.makeText(context, "Cats loaded", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "Cats load observe")
                 mAdapter.submitList(it)
@@ -106,7 +99,8 @@ class CatsFragment : Fragment(), CatListener {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (dy > 0) {
-                        pastVisibleItems = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        pastVisibleItems =
+                            (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     }
                 }
             })
@@ -124,8 +118,6 @@ class CatsFragment : Fragment(), CatListener {
         mListener.downloadImage(cat.url)
     }
 
-
-
     override fun onCatBind(pos: Int) {
         Log.d(TAG, "Bind cat at pos $pos")
     }
@@ -133,5 +125,9 @@ class CatsFragment : Fragment(), CatListener {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    private companion object {
+        const val TAG = "CatFragment"
     }
 }
