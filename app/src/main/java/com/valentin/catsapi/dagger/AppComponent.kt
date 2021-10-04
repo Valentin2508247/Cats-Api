@@ -7,6 +7,7 @@ import com.valentin.catsapi.api.ApiHelper
 import com.valentin.catsapi.api.CatApi
 import com.valentin.catsapi.database.AppDatabase
 import com.valentin.catsapi.fragments.CatsFragment
+import com.valentin.catsapi.fragments.DetailFragment
 import com.valentin.catsapi.fragments.FavouriteFragment
 import com.valentin.catsapi.repositories.CatsRepository
 import com.valentin.catsapi.viewmodels.CatsViewModel
@@ -30,6 +31,8 @@ interface AppComponent {
     }
 
     fun inject(activity: MainActivity)
+
     fun inject(fragment: CatsFragment)
     fun inject(fragment: FavouriteFragment)
+    fun inject(fragment: DetailFragment)
 }

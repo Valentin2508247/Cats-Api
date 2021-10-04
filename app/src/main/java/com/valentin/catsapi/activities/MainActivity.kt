@@ -10,10 +10,16 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.valentin.catsapi.R
@@ -21,6 +27,8 @@ import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.adapters.FavouriteFragmentListener
 import com.valentin.catsapi.adapters.ViewPagerAdapter
 import com.valentin.catsapi.databinding.ActivityMainBinding
+import com.valentin.catsapi.fragments.CatsFragmentDirections
+import com.valentin.catsapi.models.Cat
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
@@ -28,7 +36,7 @@ import java.io.OutputStream
 
 class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragmentListener {
     private lateinit var binding: ActivityMainBinding
-    private val pagerAdapter = ViewPagerAdapter(this)
+    //private val pagerAdapter = ViewPagerAdapter(this)
     private lateinit var scope: CoroutineScope
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,21 +47,22 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
         //appComponent.inject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.viewPager.adapter = pagerAdapter
-        binding.apply {
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                when (position) {
-                    0 -> {
-                        tab.text = "Cats"
-                        tab.setIcon(R.drawable.outline_pets_black_48)
-                    }
-                    1 -> {
-                        tab.text = "Favourite"
-                        tab.setIcon(R.drawable.ic_baseline_favorite_border_24)
-                    }
-                }
-            }.attach()
-        }
+
+//        binding.viewPager.adapter = pagerAdapter
+//        binding.apply {
+//            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+//                when (position) {
+//                    0 -> {
+//                        tab.text = "Cats"
+//                        tab.setIcon(R.drawable.outline_pets_black_48)
+//                    }
+//                    1 -> {
+//                        tab.text = "Favourite"
+//                        tab.setIcon(R.drawable.ic_baseline_favorite_border_24)
+//                    }
+//                }
+//            }.attach()
+//        }
     }
 
     override fun onStart() {
@@ -66,6 +75,10 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
         super.onStop()
     }
 
+    override fun showDetailed(cat: Cat, iv: View) {
+        navigateToDetail(cat, iv)
+    }
+
     override fun downloadImage(url: String) {
         scope.launch(Dispatchers.IO) {
             val bitmap: Bitmap = Glide
@@ -76,7 +89,6 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
                 .get()
             saveMediaToStorage(bitmap)
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Saved to Photos", Toast.LENGTH_LONG).show()
                 showNotification(bitmap, url)
             }
         }
@@ -117,7 +129,7 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
 
         with(NotificationManagerCompat.from(this)) {
             // notificationId is a unique int for each notification that you must define
-            notify(2508, builder.build())
+            notify(NOTIFICATION_ID, builder.build())
         }
     }
 
@@ -136,7 +148,28 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
         notificationManager.createNotificationChannel(channel)
     }
 
+    private fun navigateToDetail(cat: Cat, iv: View) {
+
+        // why zero??
+        Log.d(TAG, "x: ${iv.x}, y: ${iv.y}")
+        Log.d(TAG, "width: ${iv.width}, height: ${iv.height}")
+        var view = View(this)
+        view.layoutParams = ViewGroup.LayoutParams(iv.width, iv.height)
+        view.x = 900f
+        view.y = 900f
+        view.transitionName = cat.id
+
+        val extras = FragmentNavigatorExtras(view to cat.id)
+        val action = CatsFragmentDirections.actionCatsFragmentToDetailFragment(cat)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(action, extras)
+    }
+
     private companion object {
+        const val TAG = "ActivityMain"
+
         const val CHANNEL_ID = "cat_api"
         const val NOTIFICATION_ID = 2508
     }

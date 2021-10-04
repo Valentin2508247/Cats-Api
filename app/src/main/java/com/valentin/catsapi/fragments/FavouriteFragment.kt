@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,8 +99,8 @@ class FavouriteFragment : Fragment(), CatListener {
         Toast.makeText(context, "Download image: ${cat.url}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onCatBind(pos: Int) {
-        Log.d(TAG, "Bind cat at pos $pos")
+    override fun showDetailed(cat: Cat, iv: View) {
+        TODO("Not yet implemented")
     }
 
     override fun onDestroyView() {

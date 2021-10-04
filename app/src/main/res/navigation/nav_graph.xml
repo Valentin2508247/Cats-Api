@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/catsFragment">
+    <fragment
+        android:id="@+id/catsFragment"
+        android:name="com.valentin.catsapi.fragments.CatsFragment"
+        android:label="fragment_cats"
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_catsFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.valentin.catsapi.fragments.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="cat"
+            app:argType="com.valentin.catsapi.models.Cat" />
+    </fragment>
 </navigation>

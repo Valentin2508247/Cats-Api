@@ -17,14 +17,20 @@ class CatViewHolder(
             .load(cat.url)
             .placeholder(R.drawable.cat_placeholder)
             .into(binding.ivCat)
-        //binding.timerTextView.text = cat.toString()
 
-        binding.ivLike.setOnClickListener {
-            listener.likeCat(cat)
+
+
+        binding.ivCat.setOnClickListener {
+            binding.card.transitionName = cat.id
+            listener.showDetailed(cat, binding.card)
         }
 
-        binding.ivDownload.setOnClickListener {
-            listener.downloadImage(cat)
-        }
+//        binding.ivLike.setOnClickListener {
+//            listener.likeCat(cat)
+//        }
+//
+//        binding.ivDownload.setOnClickListener {
+//            listener.downloadImage(cat)
+//        }
     }
 }

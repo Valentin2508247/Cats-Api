@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.valentin.catsapi.adapters.CatAdapter
@@ -72,15 +74,9 @@ class CatsFragment : Fragment(), CatListener {
     }
 
     private fun setupViewModel() {
-//        val database = AppDatabase.getDatabase(requireContext())
-//        viewModel = ViewModelProvider(this, CatsViewModelFactory(CatsRepository(
-//            ApiHelper(RetrofitBuilder.catApi),
-//            database
-//        ))).get(CatsViewModel::class.java)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CatsViewModel::class.java)
         viewModel.apply {
             cats.observe(viewLifecycleOwner) {
-                Toast.makeText(context, "Cats loaded", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "Cats load observe")
                 mAdapter.submitList(it)
             }
@@ -92,7 +88,8 @@ class CatsFragment : Fragment(), CatListener {
     }
 
     private fun setupRecyclerView() {
-        mLayoutManager = LinearLayoutManager(context)
+        //mLayoutManager = LinearLayoutManager(context)
+        mLayoutManager = GridLayoutManager(context, 2)
         binding.rvCat.apply {
             layoutManager = mLayoutManager
             adapter = mAdapter
@@ -114,12 +111,11 @@ class CatsFragment : Fragment(), CatListener {
     }
 
     override fun downloadImage(cat: Cat) {
-        Toast.makeText(context, "Download image: ${cat.url}", Toast.LENGTH_SHORT).show()
         mListener.downloadImage(cat.url)
     }
 
-    override fun onCatBind(pos: Int) {
-        Log.d(TAG, "Bind cat at pos $pos")
+    override fun showDetailed(cat: Cat, iv: View) {
+        mListener.showDetailed(cat, iv)
     }
 
     override fun onDestroyView() {

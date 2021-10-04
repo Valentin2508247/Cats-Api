@@ -41,7 +41,6 @@ class CatAdapter(private val listener: CatListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         when (holder) {
             is CatViewHolder -> {
                 holder.bind(getItem(position))
@@ -52,10 +51,7 @@ class CatAdapter(private val listener: CatListener)
             is ErrorViewHolder -> {
                 holder.bind(message)
             }
-
         }
-        //holder.bind(getItem(position))
-        listener.onCatBind(position)
     }
 
     override fun getItemCount(): Int {
