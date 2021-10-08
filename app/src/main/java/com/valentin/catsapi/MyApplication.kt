@@ -13,12 +13,11 @@ class MyApplication: Application() {
         appComponent = DaggerAppComponent.builder()
             .context(this)
             .build()
-
     }
 }
 
 val Context.appComponent: AppComponent
-    get() = when(this) {
+    get() = when (this) {
         is MyApplication -> appComponent
         else -> this.applicationContext.appComponent
     }

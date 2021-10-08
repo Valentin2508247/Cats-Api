@@ -20,15 +20,12 @@ import com.bumptech.glide.request.target.Target
 import com.valentin.catsapi.R
 import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.appComponent
-import com.valentin.catsapi.databinding.FragmentCatsBinding
 import com.valentin.catsapi.databinding.FragmentDetailBinding
 import com.valentin.catsapi.viewmodels.CatsViewModel
 import com.valentin.catsapi.viewmodels.CatsViewModelFactory
 import javax.inject.Inject
 
-
 class DetailFragment : Fragment() {
-
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
@@ -67,7 +64,6 @@ class DetailFragment : Fragment() {
 
 
         startEnterTransitionAfterLoadingImage(args.cat.url, binding.ivCat)
-
     }
 
     private fun setSharedElementTransitionOnEnter() {

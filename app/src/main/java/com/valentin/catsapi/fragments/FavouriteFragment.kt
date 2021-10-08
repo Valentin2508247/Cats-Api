@@ -2,34 +2,25 @@ package com.valentin.catsapi.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.valentin.catsapi.adapters.CatAdapter
-import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.adapters.CatListener
 import com.valentin.catsapi.adapters.FavouriteFragmentListener
-import com.valentin.catsapi.api.ApiHelper
-import com.valentin.catsapi.api.RetrofitBuilder
 import com.valentin.catsapi.appComponent
 import com.valentin.catsapi.database.AppDatabase
 import com.valentin.catsapi.databinding.FragmentFavouriteBinding
 import com.valentin.catsapi.models.Cat
-import com.valentin.catsapi.repositories.CatsRepository
-import com.valentin.catsapi.viewmodels.CatsViewModel
-import com.valentin.catsapi.viewmodels.CatsViewModelFactory
 import com.valentin.catsapi.viewmodels.FavouriteViewModel
 import com.valentin.catsapi.viewmodels.FavouriteViewModelFactory
 import javax.inject.Inject
 
 class FavouriteFragment : Fragment(), CatListener {
-    private val TAG = "FavouriteFragment"
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: FavouriteViewModel
@@ -39,33 +30,21 @@ class FavouriteFragment : Fragment(), CatListener {
     private lateinit var mListener: FavouriteFragmentListener
     private val mAdapter = CatAdapter(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         requireContext().appComponent.inject(this)
         _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         setupViewModel()
-        setupListeners()
         setupRecyclerView()
-        return binding?.root
+        return binding.root
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mListener = context as FavouriteFragmentListener
-    }
-
-    private fun setupListeners() {
-
     }
 
     private fun setupViewModel() {
@@ -106,5 +85,9 @@ class FavouriteFragment : Fragment(), CatListener {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        const val TAG = "FavouriteFragment"
     }
 }

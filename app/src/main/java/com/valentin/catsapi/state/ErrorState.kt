@@ -3,7 +3,6 @@ package com.valentin.catsapi.state
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.valentin.catsapi.adapters.CatAdapter
-import com.valentin.catsapi.databinding.FragmentCatsBinding
 
 class ErrorState: LoadingState {
 

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -40,14 +39,6 @@ class CatsFragment : Fragment(), CatListener {
     @Inject
     lateinit var viewModelFactory: CatsViewModelFactory
     private lateinit var viewModel: CatsViewModel
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,7 +95,6 @@ class CatsFragment : Fragment(), CatListener {
         }
     }
 
-
     override fun likeCat(cat: Cat) {
         viewModel.saveCat(cat)
         Toast.makeText(context, "Like cat: ${cat.id}", Toast.LENGTH_SHORT).show()
@@ -115,6 +105,7 @@ class CatsFragment : Fragment(), CatListener {
     }
 
     override fun showDetailed(cat: Cat, iv: View) {
+        Log.d(TAG, "x: ${iv.x}, y: ${iv.y} CatsFragment")
         mListener.showDetailed(cat, iv)
     }
 

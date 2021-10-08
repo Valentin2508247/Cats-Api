@@ -6,9 +6,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.valentin.catsapi.fragments.CatsFragment
 import com.valentin.catsapi.fragments.FavouriteFragment
 
-class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa){
+class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
-        return when (position){
+        return when (position) {
             0 -> CatsFragment()
             1 -> FavouriteFragment()
             else -> CatsFragment()

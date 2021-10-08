@@ -12,24 +12,23 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
-import com.google.android.material.tabs.TabLayoutMediator
 import com.valentin.catsapi.R
 import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.adapters.FavouriteFragmentListener
-import com.valentin.catsapi.adapters.ViewPagerAdapter
 import com.valentin.catsapi.databinding.ActivityMainBinding
 import com.valentin.catsapi.fragments.CatsFragmentDirections
 import com.valentin.catsapi.models.Cat
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.cancel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -42,9 +41,7 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         createNotificationChannel()
-        //appComponent.inject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -76,7 +73,13 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
     }
 
     override fun showDetailed(cat: Cat, iv: View) {
-        navigateToDetail(cat, iv)
+        Log.d(TAG, "x: ${iv.x}, y: ${iv.y}")
+        val extras = FragmentNavigatorExtras(iv to cat.id)
+        val action = CatsFragmentDirections.actionCatsFragmentToDetailFragment(cat)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        navController.navigate(action, extras)
     }
 
     override fun downloadImage(url: String) {
@@ -122,7 +125,7 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
     private fun showNotification(bitmap: Bitmap, name: String) {
         var builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Cat Api")
-            .setContentText("Image '${name}' saved.")
+            .setContentText("Image '$name' saved.")
             .setSmallIcon(R.drawable.ic_baseline_save_alt_24)
             .setLargeIcon(bitmap)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -146,25 +149,6 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
-    }
-
-    private fun navigateToDetail(cat: Cat, iv: View) {
-
-        // why zero??
-        Log.d(TAG, "x: ${iv.x}, y: ${iv.y}")
-        Log.d(TAG, "width: ${iv.width}, height: ${iv.height}")
-        var view = View(this)
-        view.layoutParams = ViewGroup.LayoutParams(iv.width, iv.height)
-        view.x = 900f
-        view.y = 900f
-        view.transitionName = cat.id
-
-        val extras = FragmentNavigatorExtras(view to cat.id)
-        val action = CatsFragmentDirections.actionCatsFragmentToDetailFragment(cat)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        navController.navigate(action, extras)
     }
 
     private companion object {

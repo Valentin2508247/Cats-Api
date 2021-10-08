@@ -10,8 +10,7 @@ import com.valentin.catsapi.databinding.ErrorBinding
 import com.valentin.catsapi.databinding.FooterBinding
 import com.valentin.catsapi.models.Cat
 
-class CatAdapter(private val listener: CatListener)
-    : ListAdapter<Cat, RecyclerView.ViewHolder>(itemComparator) {
+class CatAdapter(private val listener: CatListener): ListAdapter<Cat, RecyclerView.ViewHolder>(itemComparator) {
 
     private var hasFooter = false
     private var hasError = false
@@ -73,11 +72,9 @@ class CatAdapter(private val listener: CatListener)
     }
 
     private fun isFooter(position: Int): Boolean {
-        return if (hasFooter){
+        return if (hasFooter) {
             return position == currentList.size
-        }
-        else
-            false
+        } else false
     }
 
     fun hideFooter() {
@@ -96,14 +93,12 @@ class CatAdapter(private val listener: CatListener)
     }
 
     private fun isError(position: Int): Boolean {
-        return if (hasError){
+        return if (hasError) {
             return position == currentList.size
-        }
-        else
-            false
+        } else false
     }
 
-    fun hideError() {
+    private fun hideError() {
         if (!hasError)
             return
         hasError = false

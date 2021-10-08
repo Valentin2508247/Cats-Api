@@ -8,19 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.valentin.catsapi.models.Cat
 import com.valentin.catsapi.repositories.CatsRepository
 import com.valentin.catsapi.state.LoadingState
-import com.valentin.catsapi.state.StaticState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
-
 
 class CatsViewModel @Inject constructor(private val repository: CatsRepository): ViewModel() {
-    private val TAG = "CatsViewModel"
-
-
     private val exceptionHandler = CoroutineExceptionHandler {
         _, throwable -> handleError(throwable)
     }
@@ -35,9 +28,6 @@ class CatsViewModel @Inject constructor(private val repository: CatsRepository):
         state.value = LoadingState.Static
         loadCats()
     }
-
-
-
 
     fun loadCats() {
         state.value = LoadingState.Loading
@@ -62,13 +52,14 @@ class CatsViewModel @Inject constructor(private val repository: CatsRepository):
     }
 
     private companion object {
+        const val TAG = "CatsViewModel"
         const val limit = 8
         const val order = "DESC"
         const val type = "jpg,png"
     }
 }
 
-class CatsViewModelFactory @Inject constructor(private val repository: CatsRepository): ViewModelProvider.Factory{
+class CatsViewModelFactory @Inject constructor(private val repository: CatsRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CatsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.valentin.catsapi.api.ApiHelper
 import com.valentin.catsapi.database.AppDatabase
 import com.valentin.catsapi.models.Cat
-import kotlin.random.Random
 
 class CatsRepository(private val apiHelper: ApiHelper, private val mDatabase: AppDatabase) {
 

@@ -9,5 +9,5 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "cat")
 data class Cat(
     @PrimaryKey val id: String,
-    val url: String): Parcelable
-
+    val url: String
+    ): Parcelable
