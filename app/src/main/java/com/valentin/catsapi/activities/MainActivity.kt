@@ -1,9 +1,6 @@
 package com.valentin.catsapi.activities
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.ContentValues
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -13,22 +10,17 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.valentin.catsapi.R
-import com.valentin.catsapi.adapters.CatFragmentListener
-import com.valentin.catsapi.adapters.FavouriteFragmentListener
 import com.valentin.catsapi.databinding.ActivityMainBinding
+import com.valentin.catsapi.fragments.CatFragmentListener
 import com.valentin.catsapi.fragments.CatsFragmentDirections
+import com.valentin.catsapi.fragments.FavouriteFragmentListener
 import com.valentin.catsapi.models.Cat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.cancel
+import com.valentin.catsapi.utils.NotificationHelper
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -41,7 +33,7 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        createNotificationChannel()
+        NotificationHelper.createNotificationChannel(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -92,7 +84,8 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
                 .get()
             saveMediaToStorage(bitmap)
             withContext(Dispatchers.Main) {
-                showNotification(bitmap, url)
+                NotificationHelper.showNotification(this@MainActivity, bitmap, url)
+                //showNotification(bitmap, url)
             }
         }
     }
@@ -122,39 +115,7 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
         }
     }
 
-    private fun showNotification(bitmap: Bitmap, name: String) {
-        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Cat Api")
-            .setContentText("Image '$name' saved.")
-            .setSmallIcon(R.drawable.ic_baseline_save_alt_24)
-            .setLargeIcon(bitmap)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(this)) {
-            // notificationId is a unique int for each notification that you must define
-            notify(NOTIFICATION_ID, builder.build())
-        }
-    }
-
-    private fun createNotificationChannel() {
-        // api always >= 26
-
-        val name = "Cat api"
-        val descriptionText = "Cat api notifications"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-            description = descriptionText
-        }
-        // Register the channel with the system
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
-
     private companion object {
         const val TAG = "ActivityMain"
-
-        const val CHANNEL_ID = "cat_api"
-        const val NOTIFICATION_ID = 2508
     }
 }

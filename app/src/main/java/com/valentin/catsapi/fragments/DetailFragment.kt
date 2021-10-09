@@ -18,7 +18,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.valentin.catsapi.R
-import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.appComponent
 import com.valentin.catsapi.databinding.FragmentDetailBinding
 import com.valentin.catsapi.viewmodels.CatsViewModel
@@ -49,6 +48,7 @@ class DetailFragment : Fragment() {
         }
 
         binding.ivLike.setOnClickListener {
+            // like cat
             viewModel.saveCat(args.cat)
         }
 

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.valentin.catsapi.adapters.CatAdapter
-import com.valentin.catsapi.adapters.CatFragmentListener
 import com.valentin.catsapi.adapters.CatListener
 import com.valentin.catsapi.appComponent
 import com.valentin.catsapi.databinding.FragmentCatsBinding

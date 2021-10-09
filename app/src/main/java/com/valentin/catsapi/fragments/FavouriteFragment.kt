@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.valentin.catsapi.adapters.CatAdapter
 import com.valentin.catsapi.adapters.CatListener
-import com.valentin.catsapi.adapters.FavouriteFragmentListener
 import com.valentin.catsapi.appComponent
 import com.valentin.catsapi.database.AppDatabase
 import com.valentin.catsapi.databinding.FragmentFavouriteBinding

@@ -17,6 +17,7 @@ class CatViewHolder(
         //binding.deleteButton
         Glide.with(binding.root.context)
             .load(cat.url)
+            .error(R.drawable.ic_baseline_error_outline_24)
             .placeholder(R.drawable.cat_placeholder)
             .into(binding.ivCat)
 

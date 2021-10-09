@@ -1,4 +1,4 @@
-package com.valentin.catsapi.adapters
+package com.valentin.catsapi.fragments
 
 import android.view.View
 import com.valentin.catsapi.models.Cat
