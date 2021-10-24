@@ -40,6 +40,11 @@ class DetailFragment : Fragment() {
     ): View {
         requireContext().appComponent.inject(this)
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(CatsViewModel::class.java)
 
@@ -48,21 +53,11 @@ class DetailFragment : Fragment() {
         }
 
         binding.ivLike.setOnClickListener {
-            // like cat
             viewModel.saveCat(args.cat)
         }
-
-        //initViews()
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setSharedElementTransitionOnEnter()
         postponeEnterTransition()
         binding.ivCat.transitionName = args.cat.id
-
-
         startEnterTransitionAfterLoadingImage(args.cat.url, binding.ivCat)
     }
 

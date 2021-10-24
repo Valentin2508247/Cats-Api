@@ -11,7 +11,7 @@ import com.valentin.catsapi.models.Cat
 class CatViewHolder(
     private val binding: CatItemBinding,
     private val listener: CatListener,
-): RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cat: Cat) {
         //binding.deleteButton
@@ -20,8 +20,6 @@ class CatViewHolder(
             .error(R.drawable.ic_baseline_error_outline_24)
             .placeholder(R.drawable.cat_placeholder)
             .into(binding.ivCat)
-
-
 
         binding.ivCat.setOnClickListener {
             val location = IntArray(2)
@@ -33,14 +31,6 @@ class CatViewHolder(
             Log.d(TAG, "name: ${it.transitionName}")
             listener.showDetailed(cat, binding.ivCat)
         }
-
-//        binding.ivLike.setOnClickListener {
-//            listener.likeCat(cat)
-//        }
-//
-//        binding.ivDownload.setOnClickListener {
-//            listener.downloadImage(cat)
-//        }
     }
 
     private companion object {

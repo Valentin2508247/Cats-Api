@@ -35,13 +35,9 @@ object NotificationHelper {
         notificationManager.createNotificationChannel(channel)
     }
 
-
-
-
     private const val TAG = "NotificationHelper"
     private const val IMPORTANCE = NotificationManager.IMPORTANCE_DEFAULT
     private const val NAME = "Cat api"
     private const val CHANNEL_ID = "cat_api"
     private const val LOAD_NOTIFICATION_ID = 2508
-
 }

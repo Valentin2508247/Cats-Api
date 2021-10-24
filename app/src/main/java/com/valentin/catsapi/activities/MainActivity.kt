@@ -17,7 +17,6 @@ import com.valentin.catsapi.R
 import com.valentin.catsapi.databinding.ActivityMainBinding
 import com.valentin.catsapi.fragments.CatFragmentListener
 import com.valentin.catsapi.fragments.CatsFragmentDirections
-import com.valentin.catsapi.fragments.FavouriteFragmentListener
 import com.valentin.catsapi.models.Cat
 import com.valentin.catsapi.utils.NotificationHelper
 import kotlinx.coroutines.*
@@ -25,9 +24,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragmentListener {
+class MainActivity : AppCompatActivity(), CatFragmentListener{
     private lateinit var binding: ActivityMainBinding
-    //private val pagerAdapter = ViewPagerAdapter(this)
     private lateinit var scope: CoroutineScope
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,22 +34,6 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
         NotificationHelper.createNotificationChannel(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        binding.viewPager.adapter = pagerAdapter
-//        binding.apply {
-//            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-//                when (position) {
-//                    0 -> {
-//                        tab.text = "Cats"
-//                        tab.setIcon(R.drawable.outline_pets_black_48)
-//                    }
-//                    1 -> {
-//                        tab.text = "Favourite"
-//                        tab.setIcon(R.drawable.ic_baseline_favorite_border_24)
-//                    }
-//                }
-//            }.attach()
-//        }
     }
 
     override fun onStart() {
@@ -85,7 +67,6 @@ class MainActivity : AppCompatActivity(), CatFragmentListener, FavouriteFragment
             saveMediaToStorage(bitmap)
             withContext(Dispatchers.Main) {
                 NotificationHelper.showNotification(this@MainActivity, bitmap, url)
-                //showNotification(bitmap, url)
             }
         }
     }

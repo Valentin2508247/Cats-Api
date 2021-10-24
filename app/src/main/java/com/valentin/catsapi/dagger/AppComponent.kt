@@ -4,10 +4,11 @@ import android.content.Context
 import com.valentin.catsapi.activities.MainActivity
 import com.valentin.catsapi.fragments.CatsFragment
 import com.valentin.catsapi.fragments.DetailFragment
-import com.valentin.catsapi.fragments.FavouriteFragment
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
+@Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
@@ -21,6 +22,5 @@ interface AppComponent {
     fun inject(activity: MainActivity)
 
     fun inject(fragment: CatsFragment)
-    fun inject(fragment: FavouriteFragment)
     fun inject(fragment: DetailFragment)
 }

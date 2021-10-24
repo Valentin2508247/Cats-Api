@@ -10,14 +10,15 @@ import com.valentin.catsapi.databinding.ErrorBinding
 import com.valentin.catsapi.databinding.FooterBinding
 import com.valentin.catsapi.models.Cat
 
-class CatAdapter(private val listener: CatListener): ListAdapter<Cat, RecyclerView.ViewHolder>(itemComparator) {
+class CatAdapter(private val listener: CatListener) :
+    ListAdapter<Cat, RecyclerView.ViewHolder>(itemComparator) {
 
     private var hasFooter = false
     private var hasError = false
     private var message = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val layoutInflater = LayoutInflater.from(parent.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
             FOOTER_ITEM -> {

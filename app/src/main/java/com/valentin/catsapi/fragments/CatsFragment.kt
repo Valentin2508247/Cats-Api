@@ -29,12 +29,8 @@ class CatsFragment : Fragment(), CatListener {
     private val mAdapter = CatAdapter(this)
     private lateinit var mListener: CatFragmentListener
     private lateinit var mLayoutManager: LinearLayoutManager
+    private var pastVisibleItems = 0
 
-    //    private var loading = true
-    var pastVisibleItems = 0
-
-    //    var visibleItemCount:Int = 0
-//    var totalItemCount:Int = 0
     @Inject
     lateinit var viewModelFactory: CatsViewModelFactory
     private lateinit var viewModel: CatsViewModel
@@ -45,11 +41,15 @@ class CatsFragment : Fragment(), CatListener {
     ): View {
         requireContext().appComponent.inject(this)
         _binding = FragmentCatsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setupViewModel()
         setupListeners()
         setupRecyclerView()
-
-        return binding.root
     }
 
     override fun onAttach(context: Context) {
